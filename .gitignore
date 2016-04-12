@@ -11,8 +11,24 @@
 
 # Symfony 2.8.4 #
 #################
+
+#Cache
+/app/cache/*
+/app/logs/*
+!app/cache/.gitkeep
+!app/logs/.gitkeep
+
+# Parameters
+/app/config/parameters.yml
+/app/config/parameters.ini
+
+# Managed by Composer
+/bin/*
 /vendor/
+
+# Assets and user uploads
 /web/bundles/
+/web/uploads/
 
 # Publiés au besoin donc pas besoin de les versionner #
 #######################################################
@@ -24,3 +40,4 @@
 /.bowerrc
 /src/AppBundle/Resources/bower_components/
 /node_modules/
+
