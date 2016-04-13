@@ -2,7 +2,7 @@
 var gulp = require('gulp');                         //Boite à outil pour auomatiser des tâches
 var gutil = require('gulp-util');                   //Utilitaire général pour les plugins Gulp
 var gsass = require('gulp-sass');                   //Compile les fichiers sass
-var livereload = require('gulp-livereload');        //Rafraichissement de page automatique dans chrome
+var browserSync = require('browser-sync').create(); //Rafraichissement de page automatique dans chrome
 var autoprefixer = require('gulp-autoprefixer');    //Prefixer css
 var minifyCss = require('gulp-minify-css');         //Minifie les css
 var concat = require('gulp-concat');                //Concatène tous les fichiers javascript
@@ -13,16 +13,31 @@ var del = require('del');                                   //Supprime les fichi
 var options = require('minimist')(process.argv.slice(2));   //Parse les arguments en option
 
 //Paths
-var resources = './src/AppBundle/Resources/';
-var sassDir = resources+'sass/';
-//var cssDir = 'web/css/';
-//var jsDir = 'web/js/';
-//var fontDir = 'web/fonts/';
-//var cssPrivate = '';
-//var jsPrivate = '';
-//var fontPrivate = 'src/AppBundle/Resources/bower_components/bootstrap-sass/assets/fonts/bootstrap/*';
+var resourcesApp = './app/Resources/';
+var resourcesWeb = './src/AppBundle/Resources/';
+var sassDir = resourcesWeb+'sass/';
 var modeState = 'dev'; //dev | prod
 
+//OTHERS
+var appName = 'myBaseSFN2_BSG';
+
+
+// Static server
+gulp.task('browserSync', function() {
+    browserSync.init(
+        {
+            browser: ["chrome"],
+            //Pour du fichier html simple
+            /*server: {
+                baseDir: "./"
+            }*/
+            //Pour interpréter via un proxy
+            proxy: "http://localhost:8787/"+appName 
+        }
+    );
+   
+    
+});
 
 //On créé une tâche test
 gulp.task('test', function(){
@@ -37,16 +52,16 @@ gulp.task('testminimist', function(){
 gulp.task('scripts', function(){
     return gulp.src(
                 [
-                    resources+'/bower_components/jquery/dist/jquery.js',
-                    resources+'/bower_components/bootstrap-sass/assets/javascripts/bootstrap.js',
-                    resources+'/js/**/*.js'
+                    resourcesWeb+'/bower_components/jquery/dist/jquery.js',
+                    resourcesWeb+'/bower_components/bootstrap-sass/assets/javascripts/bootstrap.js',
+                    resourcesWeb+'/js/**/*.js'
                 ]
             )
             //.pipe(uglify())
             .pipe(options.prod ? uglify() : gutil.noop())
             .pipe(concat('main.js'))
             .pipe(gulp.dest('./web/js/'))
-            .pipe(livereload())
+            .pipe(browserSync.stream())
             ;
 });
 
@@ -65,7 +80,7 @@ gulp.task('styles', function(){
             //Quand on veut avorter un pipe on utilise gutil.noop()
             .pipe(options.prod ? minifyCss() : gutil.noop())
             .pipe(gulp.dest('./web/css/'))
-            .pipe(livereload())
+            .pipe(browserSync.stream())
             .on('end', function(){
                 gutil.log(gutil.colors.yellow('La tâche "styles" est terminée !'));
             })
@@ -75,7 +90,7 @@ gulp.task('styles', function(){
 //On envoie les fichiers images optimisées
 //On met en argument del:img
 gulp.task('img',['del:img'], function(){
-    return gulp.src(resources+'/img/**/*.*')
+    return gulp.src(resourcesWeb+'/img/**/*.*')
             .pipe(imagemin())
             .pipe(gulp.dest('./web/img'))
             .on('end', function(){
@@ -90,17 +105,31 @@ gulp.task('html', function(){
                 conditionals: true,	//Pour ne pas supprimer les commentaires IE
                 spare: true		//Pour ne pas supprimer les attributs redondants
 		};
-    return gulp.src(resources+'/views/**/*.html')
+    return gulp.src(resourcesWeb+'/views/**/*.html')
             //.pipe(minifyHtml(opts))
             .pipe(options.prod ? minifyHtml(opts) : gutil.noop())
             .pipe(gulp.dest('./web/'))
-            .pipe(livereload())
+            .pipe(browserSync.stream())
+            ;
+});
+
+//Dès que l'on modifie les fichiers twig dans app/Resources
+gulp.task('twigAppRes', function(){
+    return gulp.src(resourcesApp+'views/**/*.twig')
+            .pipe(browserSync.stream())
+            ;
+});
+
+//Dès que l'on modifie les fichiers twig dans src/AppBundle/Resources
+gulp.task('twigSrcApp', function(){
+    return gulp.src(resourcesWeb+'views/**/*.twig')
+            .pipe(browserSync.stream())
             ;
 });
 
 //On récupère toutes les polices
 gulp.task('icons', function(){
-    return gulp.src(resources+'bower_components/bootstrap-sass/assets/fonts/bootstrap/**.*')
+    return gulp.src(resourcesWeb+'bower_components/bootstrap-sass/assets/fonts/bootstrap/**.*')
             .pipe(gulp.dest('./web/fonts'))
             .on('end', function(){
                 gutil.log(gutil.colors.yellow('La tâche "icons" est terminée !'));
@@ -109,15 +138,18 @@ gulp.task('icons', function(){
 });
 
 //On écoute tous les fichiers du répertoire sass qui finissent pas scss
-gulp.task('watch', function(){
-    livereload.listen();
+gulp.task('watch', ['browserSync'], function(){
+    //livereload.listen();
+    gulp.watch(resourcesApp+'views/**/*.twig',['twigAppRes']);
+    gulp.watch(resourcesWeb+'views/**/*.twig',['twigSrcApp']);
     gulp.watch([sassDir+'/*.scss', sassDir+'/*.sass'], ['styles']);
-    gulp.watch(resources+'/views/**/*.html',['html']);
+    gulp.watch(resourcesWeb+'/views/**/*.html',['html']);
     gulp.watch([
-                    resources+'/bower_components/jquery/dist/jquery.js',
-                    resources+'/bower_components/bootstrap-sass/assets/javascripts/bootstrap.js',
-                    resources+'/js/**/*.js'
-                ],['scripts']);
+                    resourcesWeb+'/bower_components/jquery/dist/jquery.js',
+                    resourcesWeb+'/bower_components/bootstrap-sass/assets/javascripts/bootstrap.js',
+                    resourcesWeb+'/js/**/*.js'
+                ],['scripts'])
+    ;
 });
 
 //Tâche qui supprime (nettoyage) les fichiers en trop
