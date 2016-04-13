@@ -1,0 +1,6 @@
+1 - bower install
+2 - npm install
+3 - npm install gulp gulp-util gulp-sass browser-sync gulp-autoprefixer gulp-minify-css 
+gulp-concat gulp-uglify gulp-minify-html gulp-imagemin del minimist --save-dev
+4 - on attribue le nouveau nom du projet à la variable appName dans gulpfile.js
+
