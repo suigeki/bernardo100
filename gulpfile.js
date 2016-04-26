@@ -19,7 +19,7 @@ var sassDir = resourcesWeb+'sass/';
 var modeState = 'dev'; //dev | prod
 
 //OTHERS
-var pathApp = 'myBaseSFN2_BSG';
+var pathApp = 'Test1S2BSG';
 
 
 // Static server
@@ -32,7 +32,7 @@ gulp.task('browserSync', function() {
                 baseDir: "./"
             }*/
             //Pour interpréter via un proxy
-            proxy: "http://localhost:8787/"+pathApp 
+            proxy: "http://localhost:8787/symfony2/"+pathApp+"/web/app_dev.php" 
         }
     );
    

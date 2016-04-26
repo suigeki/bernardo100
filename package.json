@@ -1,5 +1,5 @@
 {
-  "name": "mybasesfn2bsg",
+  "name": "test1s2bsg",
   "version": "1.0.0",
   "description": "Symfony 2 comprenant Bootstrap piloté par Sass et Gulp",
   "main": "index.js",
@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "browser-sync": "^2.12.2",
+    "browser-sync": "^2.12.4",
     "del": "^2.2.0",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.0",
@@ -17,17 +17,17 @@
     "gulp-imagemin": "^2.4.0",
     "gulp-minify-css": "^1.2.4",
     "gulp-minify-html": "^1.0.6",
-    "gulp-sass": "^2.2.0",
+    "gulp-sass": "^2.3.1",
     "gulp-uglify": "^1.5.3",
     "gulp-util": "^3.0.7",
     "minimist": "^1.2.0"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/suigeki/Symfony2BSG.git"
+    "url": "git+https://github.com/suigeki/Test1S2BSG.git"
   },
   "bugs": {
-    "url": "https://github.com/suigeki/Symfony2BSG/issues"
+    "url": "https://github.com/suigeki/Test1S2BSG/issues"
   },
-  "homepage": "https://github.com/suigeki/Symfony2BSG#readme"
+  "homepage": "https://github.com/suigeki/Test1S2BSG#readme"
 }
