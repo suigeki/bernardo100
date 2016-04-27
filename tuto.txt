@@ -12,6 +12,11 @@
 	[remote "origin"]
 		url = https://github.com/suigeki/nomappligithub.git
 10 - Créer la base de donnée
+        cd C:\wamp64\bin\mysql\mysql5.7.9\bin
+        mysql.exe --user=root --password=###
+        SHOW DATABASES;
+        CREATE DATABASE mynewdb;
+        SHOW DATABASES;
 11 - On met la base de données à jour
     	php app/console doctrine:schema:update --dum-sql --force
 12 - On créer un utilisateur client en mode console
