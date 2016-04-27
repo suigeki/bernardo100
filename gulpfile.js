@@ -9,7 +9,7 @@ var concat = require('gulp-concat');                //Concatène tous les fichie
 var uglify = require('gulp-uglify');                //Minifie les javascripts
 var minifyHtml = require('gulp-minify-html');       //Minifie les fichiers html
 var imagemin = require('gulp-imagemin');            //Optimise le poids des images
-var del = require('del');                                   //Supprime les fichiers préalablement régénrés
+var del = require('del');                           //Supprime les fichiers préalablement régénrés
 var options = require('minimist')(process.argv.slice(2));   //Parse les arguments en option
 
 //Paths
@@ -19,7 +19,7 @@ var sassDir = resourcesWeb+'sass/';
 var modeState = 'dev'; //dev | prod
 
 //OTHERS
-var pathApp = 'Test1S2BSG';
+var pathApp = 'bernardo100';
 
 
 // Static server
