@@ -8,3 +8,17 @@
 6 - npm install gulp-uglify gulp-minify-html gulp-imagemin del minimist --save-dev
 7 - on attribue le nouveau nom du projet à la variable appName dans gulpfile.js
 8 - On génère les fichiers web par gulp prod --dev
+9 - Changer le lien git dans le fichier .git/config
+	[remote "origin"]
+		url = https://github.com/suigeki/nomappligithub.git
+10 - Créer la base de donnée
+11 - On met la base de données à jour
+    	php app/console doctrine:schema:update --dum-sql --force
+12 - On créer un utilisateur client en mode console
+    	php app/console fos:user:create client client@mail.com mdp
+13 - On affecte un rôle à client avec la console
+    	php app/console fos:user:promote client ROLE_USER
+14 - On créer un utilisateur admin en mode console
+    	php app/console fos:user:create admin admin@mail.com mdp
+15 - On affecte un rôle à admin avec la console
+    	php app/console fos:user:promote admin ROLE_ADMIN
